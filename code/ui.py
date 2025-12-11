@@ -88,6 +88,9 @@ def run_analysis():
         ui.upload(on_upload=handle_upload, label="Upload Image")
         ui.button("Run Detection", on_click=run_detection)
 
+ui.label("LSB Steganography Detector").classes(
+    "text-3xl font-bold py-4 w-full text-center sticky top-0 bg-white z-50 shadow"
+)
 
 with open("code/make_graphs.py") as file:
     exec(file.read())
@@ -98,6 +101,7 @@ with ui.tabs().classes('w-full') as tabs:
     three = ui.tab('RS Mean Boxplot')
     four = ui.tab('Sample Pair Graphs')
     five = ui.tab('Suspicious Score Graphs')
+    six = ui.tab('About This Project')
 with ui.tab_panels(tabs, value=one).classes('w-full'):
     with ui.tab_panel(one):
         with ui.row().classes('w-full items-center justify-center'):
@@ -116,5 +120,31 @@ with ui.tab_panels(tabs, value=one).classes('w-full'):
         with ui.row().classes('w-full items-center justify-center gap-4'):
             ui.image('results/graphs/suspicious_score_boxplot.png').classes('w-150')
             ui.image('results/graphs/suspicious_score_hist.png').classes('w-150')
-
+    with ui.tab_panel(six):
+        with ui.card().classes("w-full bg-gray-100 p-6 text-center items-center justify-center"):
+            ui.label("Summary").classes("text-2xl font-bold mb-2")
+            ui.label(
+                "A simple, automated way to detect the most common type of Steganography "
+                "(LSB) in an image dataset utilizing 3 well-known steganalysis techniques to "
+                "generate a probability of steganography for each image."
+            )
+        with ui.card().classes("w-full bg-gray-100 p-6 mt-4 items-center justify-center"):
+            ui.label("Motivation").classes("text-2xl font-bold mb-2")
+            ui.label(
+                "Detecting steganography is a major challenge for forensic analysts. The data "
+                "hidden in such images do not affect the appearance of the image to the naked "
+                "eye, as it produces only minimal visual distortion. The goal of this project "
+                "is to design and implement a system capable of detecting potential hidden "
+                "information in digital image files through algorithmic analysis and "
+                "statistical inspection, supporting forensic examinations where steganography "
+                "is suspected."
+            )
+        with ui.card().classes("w-full bg-gray-100 p-6 mt-4 items-center justify-center"):
+            ui.label("Accuracy").classes("text-2xl font-bold mb-2")
+            ui.label(
+                "Our tool was extremely effective at correctly identifying clean images and stego images" 
+                "with 10% and 25% of the image altered. It did not perform as well with smaller injection rates"
+                " (5%), which is expected as our detection methods do not typically perform well against" 
+                "sparse injection."
+            )
 ui.run()
