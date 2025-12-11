@@ -83,9 +83,10 @@ def run_analysis():
             ui.notify(str(e), color="red")
 
     #UI layout for the buttons and run the UI
-    ui.label("LSB Steganography Detector").classes("text-2xl font-bold")
-    ui.upload(on_upload=handle_upload, label="Upload Image")
-    ui.button("Run Detection", on_click=run_detection)
+    with ui.column().classes('items-center justify-center w-full'):
+        ui.label("LSB Steganography Detector").classes("text-2xl font-bold")
+        ui.upload(on_upload=handle_upload, label="Upload Image")
+        ui.button("Run Detection", on_click=run_detection)
 
 
 with open("code/make_graphs.py") as file:
