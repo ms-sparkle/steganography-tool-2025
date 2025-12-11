@@ -37,7 +37,7 @@ def run_analysis():
         with open(uploaded_path, "wb") as f:
             f.write(data)
         
-        #Showcase the uplaoded image
+        #Showcase the uploaded image
         image_preview.set_source(f"data:image/png;base64,{file.content_base64}")
 
         #To notify the user that it was uploaded successfully
