@@ -97,37 +97,14 @@ ui.label("LSB Steganography Detector").classes(
     "text-3xl font-bold py-4 w-full text-center sticky top-0 bg-white z-50 shadow"
 )
 
-if os.path.exists("results/analysis_results.csv"):
-    exec(open("make_graphs.py").read())
-else:
-    print("CSV not found")
-
 with ui.tabs().classes('w-full') as tabs:
-    one = ui.tab('Upload Files')
-    two = ui.tab('Chi Distribution')
-    three = ui.tab('RS Mean Boxplot')
-    four = ui.tab('Sample Pair Graphs')
-    five = ui.tab('Suspicious Score Graphs')
-    six = ui.tab('About This Project')
+    one = ui.tab('Detect LSB')
+    two = ui.tab('About This Project')
 with ui.tab_panels(tabs, value=one).classes('w-full'):
     with ui.tab_panel(one):
         with ui.row().classes('w-full items-center justify-center'):
             run_analysis()
     with ui.tab_panel(two):
-        with ui.row().classes('w-full justify-center'):
-            ui.image('results/graphs/chi_mean_distribution.png').classes('w-200')
-    with ui.tab_panel(three):
-        with ui.row().classes('w-full justify-center'):
-            ui.image('results/graphs/rs_mean_boxplot.png').classes('w-200')
-    with ui.tab_panel(four):
-        with ui.row().classes('w-full items-center justify-center gap-4'):
-            ui.image('results/graphs/sample_pair_deviation.png').classes('w-150')
-            ui.image('results/graphs/sample_pair_equal_ratio.png').classes('w-150')
-    with ui.tab_panel(five):
-        with ui.row().classes('w-full items-center justify-center gap-4'):
-            ui.image('results/graphs/suspicious_score_boxplot.png').classes('w-150')
-            ui.image('results/graphs/suspicious_score_hist.png').classes('w-150')
-    with ui.tab_panel(six):
         with ui.card().classes("w-full bg-gray-100 p-6 text-center items-center justify-center"):
             ui.label("Summary").classes("text-2xl font-bold mb-2")
             ui.label(
@@ -154,4 +131,16 @@ with ui.tab_panels(tabs, value=one).classes('w-full'):
                 " (5%), which is expected as our detection methods do not typically perform well against" 
                 "sparse injection."
             )
+        with ui.card().classes("w-full bg-gray-100 p-6 mt-4 items-center justify-center"):
+            ui.label("Graphs of Results with Test Images").classes("text-2xl font-bold mb-2")
+            with ui.row().classes('w-full items-center justify-center gap-4'):
+                ui.image('results/graphs/chi_mean_distribution.png').classes('w-150')
+                ui.image('results/graphs/rs_mean_boxplot.png').classes('w-150')
+            with ui.row().classes('w-full items-center justify-center gap-4'):
+                ui.image('results/graphs/sample_pair_deviation.png').classes('w-150')
+                ui.image('results/graphs/sample_pair_equal_ratio.png').classes('w-150')
+            with ui.row().classes('w-full items-center justify-center gap-4'):
+                ui.image('results/graphs/suspicious_score_boxplot.png').classes('w-150')
+                ui.image('results/graphs/suspicious_score_hist.png').classes('w-150')
+                
 ui.run()
