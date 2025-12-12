@@ -38,3 +38,4 @@ deviation, sample pair equal ratio, and suspicious score
 
 ## Usage
 Run: python3 frontend.py
+To see analysis on sample dataset run: python3 run_analysis.py
