@@ -1,16 +1,8 @@
 from nicegui import ui
 import os
-from detect_lsb import extract_lsb, chi_square_test, rs_analysis, sample_pair_stat
+from detect_lsb import extract_lsb, chi_square_test, rs_analysis, sample_pair_stat, suspicious_score
 import base64
 from run_analysis import main as run_dataset_analysis
-
-# print("Running dataset analysis")
-# try:
-#     run_dataset_analysis()
-#     print("Dataset analysis complete.")
-# except Exception as e:
-#     print("Dataset analysis FAILED: ", e)
-
 
 def run_analysis():
     #Hide the upload percentage tracker cause it can be quite misleading
@@ -65,6 +57,7 @@ def run_analysis():
         try:
             path = uploaded_path["value"]
             lsbs = extract_lsb(uploaded_path["value"])
+            susscore = suspicious_score(lsbs, path)
             chi_mean, chi_std, frac_sig, chi_bias = chi_square_test(lsbs)
             rs_mean, rs_std = rs_analysis(uploaded_path["value"])
             sp_ratio, sp_dev = sample_pair_stat(lsbs)
@@ -89,6 +82,9 @@ def run_analysis():
     ###Sample Pair Analysis
     - **Equal Pair Ratio:** {sp_ratio:.4f}
     - **Deviation from 0.5:** {sp_dev:.4f}
+
+    ###Suspicious Score
+    - {susscore:.4f}
     """)
 
             ui.notify("Analysis done!", color="green")
@@ -129,7 +125,7 @@ with ui.tab_panels(tabs, value=one).classes('w-full'):
                 "is to design and implement a system capable of detecting potential hidden "
                 "information in digital image files through algorithmic analysis and "
                 "statistical inspection, supporting forensic examinations where steganography "
-                "is suspected."
+                "is suspected. The Suspicious Score has a range between 0 and 1. 1 being most suspicious and 0 being least."
             )
         with ui.card().classes("w-full bg-gray-100 p-6 mt-4 items-center justify-center"):
             ui.label("Accuracy").classes("text-2xl font-bold mb-2")

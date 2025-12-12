@@ -175,3 +175,29 @@ def sample_pair_stat(lsb_array):
     deviation_from_half = abs(pair_equal_ratio - 0.5)
 
     return float(pair_equal_ratio), float(deviation_from_half)
+
+# -------------------------------
+# Suspicious Score Calculation
+# -------------------------------
+def suspicious_score(lsb_array, image_path):
+
+    # --- compute stego stats ---
+    stego_rs_mean, stego_rs_std = rs_analysis(str(image_path))
+    stego_sp_ratio, stego_sp_dev = sample_pair_stat(lsb_array)
+    stego_chi_mean, stego_chi_std, stego_chi_frac, stego_chi_bias = chi_square_test(lsb_array)
+
+    # --- load clean baseline (for now, hard-coded) ---
+    clean_lsb = extract_lsb("dataset/clean/img004.png")
+    clean_rs_mean, clean_rs_std = rs_analysis("dataset/clean/img004.png")
+    clean_sp_ratio, clean_sp_dev = sample_pair_stat(clean_lsb)
+    clean_chi_mean, clean_chi_std, clean_chi_frac, clean_chi_bias = chi_square_test(clean_lsb)
+
+    # --- compute deltas using the correct components ---
+    sp_delta = max(clean_sp_dev - stego_sp_dev, 0.0)
+    chi_delta = max(clean_chi_mean - stego_chi_mean, 0.0)
+    rs_delta = max(clean_rs_mean - stego_rs_mean, 0.0)
+
+    # --- weight combination ---
+    raw_score = 0.5 * sp_delta + 0.3 * chi_delta + 0.2 * rs_delta
+    norm_score = (raw_score - 0) / (4.506580523889968 - 0)
+    return norm_score
