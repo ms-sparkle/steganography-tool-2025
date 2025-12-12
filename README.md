@@ -37,13 +37,4 @@ deviation, sample pair equal ratio, and suspicious score
 5. Run any of the included program using command listed below
 
 ## Usage
-- Detect Lsb
-    - `python3 code/detect_lsb.py`
-- Stego Generation 
-    - `python3 code/generate_stego_png.py`
-- Make Graphs
-    - `python3 code/make_graphs.py`
-- Analysis
-    - `python3 code/run_analysis.py`
-- UI Display (note: this will automatically run make_graphs.py)
-    - `python3 code/ui.py`
+Run: python3 frontend.py
