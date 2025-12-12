@@ -273,6 +273,7 @@ def main():
     raw_scores = [row["raw_suspicious_score"] for row in rows]
     min_raw = min(raw_scores)
     max_raw = max(raw_scores)
+    print("max raw is", max_raw)
 
     if max_raw > min_raw:
         for row in rows:
@@ -297,10 +298,10 @@ def main():
     # --- Summaries for report ---
 
     summarize_by_label(rows)
-    summarize_detection(rows, thresholds=(0.05, 0.10, 0.20))
-    summarize_detection_per_payload(rows, thresholds=(0.05, 0.10, 0.20))
+    summarize_detection(rows, thresholds=(0.05, 0.1, 0.2))
+    summarize_detection_per_payload(rows, thresholds=(0.05, 0.1, 0.2))
     summarize_confidence_intervals(rows)
-    summarize_detection_ci(rows, thresholds=(0.05, 0.10, 0.20))
+    summarize_detection_ci(rows, thresholds=(0.05, 0.1, 0.2))
 
     # --- Cleanup and write CSV ---
 

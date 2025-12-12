@@ -181,21 +181,23 @@ def sample_pair_stat(lsb_array):
 # -------------------------------
 def suspicious_score(lsb_array, image_path):
 
-    stego_rs = rs_analysis(str(image_path))
-    stego_sp = sample_pair_stat(lsb_array)
-    stego_chi = chi_square_test(lsb_array)
+    # --- compute stego stats ---
+    stego_rs_mean, stego_rs_std = rs_analysis(str(image_path))
+    stego_sp_ratio, stego_sp_dev = sample_pair_stat(lsb_array)
+    stego_chi_mean, stego_chi_std, stego_chi_frac, stego_chi_bias = chi_square_test(lsb_array)
 
+    # --- load clean baseline (for now, hard-coded) ---
     clean_lsb = extract_lsb("dataset/clean/img004.png")
+    clean_rs_mean, clean_rs_std = rs_analysis("dataset/clean/img004.png")
+    clean_sp_ratio, clean_sp_dev = sample_pair_stat(clean_lsb)
+    clean_chi_mean, clean_chi_std, clean_chi_frac, clean_chi_bias = chi_square_test(clean_lsb)
 
-    clean_rs = rs_analysis("dataset/clean/img004.png")
-    clean_sp = sample_pair_stat(clean_lsb)
-    clean_chi = chi_square_test(clean_lsb)
+    # --- compute deltas using the correct components ---
+    sp_delta = max(clean_sp_dev - stego_sp_dev, 0.0)
+    chi_delta = max(clean_chi_mean - stego_chi_mean, 0.0)
+    rs_delta = max(clean_rs_mean - stego_rs_mean, 0.0)
 
-    # Deltas: how far has this stego image moved away from its clean baseline
-    sp_delta = max(clean_sp - stego_sp, 0.0)
-    chi_delta = max(clean_chi - stego_chi, 0.0)
-    rs_delta = max(clean_rs - stego_rs, 0.0)
-
-    # Weighted combination into a raw suspicious score
+    # --- weight combination ---
     raw_score = 0.5 * sp_delta + 0.3 * chi_delta + 0.2 * rs_delta
-    return raw_score
+    norm_score = (raw_score - 0) / (4.506580523889968 - 0)
+    return norm_score
