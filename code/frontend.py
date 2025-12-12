@@ -1,15 +1,15 @@
 from nicegui import ui
 import os
-from detect_lsb import extract_lsb, chi_square_test, rs_analysis, sample_pair_stat
+from detect_lsb import extract_lsb, chi_square_test, rs_analysis, sample_pair_stat, suspicious_score
 import base64
 from run_analysis import main as run_dataset_analysis
 
-# print("Running dataset analysis")
-# try:
-#     run_dataset_analysis()
-#     print("Dataset analysis complete.")
-# except Exception as e:
-#     print("Dataset analysis FAILED: ", e)
+print("Running dataset analysis")
+try:
+    run_dataset_analysis()
+    print("Dataset analysis complete.")
+except Exception as e:
+    print("Dataset analysis FAILED: ", e)
 
 
 def run_analysis():

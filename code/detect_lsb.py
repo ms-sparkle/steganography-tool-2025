@@ -175,3 +175,27 @@ def sample_pair_stat(lsb_array):
     deviation_from_half = abs(pair_equal_ratio - 0.5)
 
     return float(pair_equal_ratio), float(deviation_from_half)
+
+# -------------------------------
+# Suspicious Score Calculation
+# -------------------------------
+def suspicious_score(lsb_array, image_path):
+
+    stego_rs = rs_analysis(str(image_path))
+    stego_sp = sample_pair_stat(lsb_array)
+    stego_chi = chi_square_test(lsb_array)
+
+    clean_lsb = extract_lsb("dataset/clean/img004.png")
+
+    clean_rs = rs_analysis("dataset/clean/img004.png")
+    clean_sp = sample_pair_stat(clean_lsb)
+    clean_chi = chi_square_test(clean_lsb)
+
+    # Deltas: how far has this stego image moved away from its clean baseline
+    sp_delta = max(clean_sp - stego_sp, 0.0)
+    chi_delta = max(clean_chi - stego_chi, 0.0)
+    rs_delta = max(clean_rs - stego_rs, 0.0)
+
+    # Weighted combination into a raw suspicious score
+    raw_score = 0.5 * sp_delta + 0.3 * chi_delta + 0.2 * rs_delta
+    rows[stego_idx]["raw_suspicious_score"] = raw_score
