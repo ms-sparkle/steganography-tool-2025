@@ -4,14 +4,6 @@ from detect_lsb import extract_lsb, chi_square_test, rs_analysis, sample_pair_st
 import base64
 from run_analysis import main as run_dataset_analysis
 
-print("Running dataset analysis")
-try:
-    run_dataset_analysis()
-    print("Dataset analysis complete.")
-except Exception as e:
-    print("Dataset analysis FAILED: ", e)
-
-
 def run_analysis():
     #Hide the upload percentage tracker cause it can be quite misleading
     ui.add_head_html("""
@@ -65,6 +57,7 @@ def run_analysis():
         try:
             path = uploaded_path["value"]
             lsbs = extract_lsb(uploaded_path["value"])
+            susscore = suspicious_score(lsbs, path)
             chi_mean, chi_std, frac_sig, chi_bias = chi_square_test(lsbs)
             rs_mean, rs_std = rs_analysis(uploaded_path["value"])
             sp_ratio, sp_dev = sample_pair_stat(lsbs)
@@ -89,6 +82,9 @@ def run_analysis():
     ###Sample Pair Analysis
     - **Equal Pair Ratio:** {sp_ratio:.4f}
     - **Deviation from 0.5:** {sp_dev:.4f}
+
+    ###Suspicious Score
+    - {susscore:.4f}
     """)
 
             ui.notify("Analysis done!", color="green")

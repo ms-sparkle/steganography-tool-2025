@@ -198,4 +198,4 @@ def suspicious_score(lsb_array, image_path):
 
     # Weighted combination into a raw suspicious score
     raw_score = 0.5 * sp_delta + 0.3 * chi_delta + 0.2 * rs_delta
-    rows[stego_idx]["raw_suspicious_score"] = raw_score
+    return raw_score
