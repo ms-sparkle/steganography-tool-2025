@@ -37,5 +37,5 @@ deviation, sample pair equal ratio, and suspicious score
 5. Run any of the included program using command listed below
 
 ## Usage
-Run: python3 frontend.py
-To see analysis on sample dataset run: python3 run_analysis.py
+-Run: python3 frontend.py
+-To see analysis on sample dataset run: python3 run_analysis.py
